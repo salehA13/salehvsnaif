@@ -59,6 +59,13 @@
       flex: 1;
     }
 
+    .player-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 12px;
+      display: block;
+    }
+
     .player-name {
       font-size: 1.5rem;
       font-weight: 700;
@@ -245,12 +252,14 @@
   <!-- Main Scoreboard -->
   <div class="scoreboard">
     <div class="player">
+      <img src="./assets/chelsea.svg" alt="Chelsea" class="player-icon">
       <div class="player-name saleh">Saleh</div>
       <div class="player-score saleh" id="saleh-nights">0</div>
       <div class="player-label">Nights Won</div>
     </div>
     <div class="vs">VS</div>
     <div class="player">
+      <img src="./assets/fox.svg" alt="Fox" class="player-icon">
       <div class="player-name naif">Naif</div>
       <div class="player-score naif" id="naif-nights">0</div>
       <div class="player-label">Nights Won</div>
