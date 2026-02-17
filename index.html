@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saleh vs Naif — Table Tennis Showdown</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏓</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .header h1 {
+      font-size: 1rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #86868b;
+      margin-bottom: 8px;
+    }
+
+    .header .emoji {
+      font-size: 2.5rem;
+      margin-bottom: 4px;
+    }
+
+    /* Main Scoreboard */
+    .scoreboard {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 48px;
+      padding: 48px 24px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+
+    .player {
+      text-align: center;
+      flex: 1;
+    }
+
+    .player-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .player-name.saleh { color: #0071e3; }
+    .player-name.naif { color: #e30000; }
+
+    .player-score {
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -3px;
+    }
+
+    .player-score.saleh { color: #0071e3; }
+    .player-score.naif { color: #e30000; }
+
+    .player-label {
+      font-size: 0.8rem;
+      color: #86868b;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 8px;
+    }
+
+    .vs {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #86868b;
+      padding: 12px 16px;
+      background: #f5f5f7;
+      border-radius: 50%;
+    }
+
+    /* Stats Grid */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #86868b;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+
+    /* Streak */
+    .streak-bar {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .streak-bar .streak-text {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .streak-bar .streak-label {
+      font-size: 0.75rem;
+      color: #86868b;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 2px;
+    }
+
+    /* Night History */
+    .history-section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+
+    .night-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .night-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    }
+
+    .night-date {
+      font-size: 0.85rem;
+      color: #86868b;
+      min-width: 100px;
+    }
+
+    .night-score {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .night-score .s { color: #0071e3; }
+    .night-score .n { color: #e30000; }
+    .night-score .dash { color: #ccc; font-weight: 400; }
+
+    .night-winner {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .night-winner.saleh { background: #e8f2fd; color: #0071e3; }
+    .night-winner.naif { background: #fde8e8; color: #e30000; }
+    .night-winner.draw { background: #f0f0f0; color: #86868b; }
+
+    /* no admin styles needed */
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: #86868b;
+      font-size: 0.75rem;
+    }
+
+    /* Mobile */
+    @media (max-width: 500px) {
+      .player-score { font-size: 3.5rem; }
+      .player-name { font-size: 1.2rem; }
+      .scoreboard { padding: 32px 16px; gap: 20px; }
+      .stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .stat-card { padding: 16px; }
+      .stat-value { font-size: 1.5rem; }
+      .form-row { flex-direction: column; gap: 10px; }
+      .night-card { flex-wrap: wrap; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="emoji">🏓</div>
+    <h1>Table Tennis Showdown</h1>
+  </div>
+
+  <!-- Main Scoreboard -->
+  <div class="scoreboard">
+    <div class="player">
+      <div class="player-name saleh">Saleh</div>
+      <div class="player-score saleh" id="saleh-nights">0</div>
+      <div class="player-label">Nights Won</div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="player">
+      <div class="player-name naif">Naif</div>
+      <div class="player-score naif" id="naif-nights">0</div>
+      <div class="player-label">Nights Won</div>
+    </div>
+  </div>
+
+  <!-- Streak -->
+  <div class="streak-bar" id="streak-bar">
+    <div class="streak-text" id="streak-text">No games yet</div>
+    <div class="streak-label">Current Streak</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-value" id="total-games">0</div>
+      <div class="stat-label">Total Games</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="total-nights">0</div>
+      <div class="stat-label">Nights Played</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="saleh-games">0</div>
+      <div class="stat-label">Saleh's Games</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="naif-games">0</div>
+      <div class="stat-label">Naif's Games</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="saleh-winrate">0%</div>
+      <div class="stat-label">Saleh Win Rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="naif-winrate">0%</div>
+      <div class="stat-label">Naif Win Rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="saleh-sweeps">0</div>
+      <div class="stat-label">Saleh Sweeps</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="naif-sweeps">0</div>
+      <div class="stat-label">Naif Sweeps</div>
+    </div>
+  </div>
+
+  <!-- Night History -->
+  <div class="history-section">
+    <div class="section-title">Night History</div>
+    <div class="night-list" id="night-list">
+      <div style="text-align:center;color:#86868b;padding:32px;">No nights recorded yet</div>
+    </div>
+  </div>
+
+  <!-- Scores managed via data.json -->
+
+  <div class="footer">salehvsnaif.com 🏓</div>
+</div>
+
+<script>
+  let nightsData = [];
+
+  async function loadData() {
+    try {
+      const res = await fetch('./data.json?' + Date.now());
+      const data = await res.json();
+      nightsData = data.nights || [];
+      nightsData.sort((a, b) => b.date.localeCompare(a.date));
+    } catch (e) {
+      nightsData = [];
+    }
+    render();
+  }
+
+  function getNights() {
+    return nightsData;
+  }
+
+  function render() {
+    const nights = getNights();
+
+    let salehNights = 0, naifNights = 0, drawNights = 0;
+    let salehGames = 0, naifGames = 0;
+    let salehSweeps = 0, naifSweeps = 0;
+
+    nights.forEach(n => {
+      salehGames += n.saleh;
+      naifGames += n.naif;
+      if (n.saleh > n.naif) salehNights++;
+      else if (n.naif > n.saleh) naifNights++;
+      else drawNights++;
+      if (n.naif === 0 && n.saleh > 0) salehSweeps++;
+      if (n.saleh === 0 && n.naif > 0) naifSweeps++;
+    });
+
+    const totalGames = salehGames + naifGames;
+    const totalNights = nights.length;
+
+    document.getElementById('saleh-nights').textContent = salehNights;
+    document.getElementById('naif-nights').textContent = naifNights;
+    document.getElementById('total-games').textContent = totalGames;
+    document.getElementById('total-nights').textContent = totalNights;
+    document.getElementById('saleh-games').textContent = salehGames;
+    document.getElementById('naif-games').textContent = naifGames;
+    document.getElementById('saleh-winrate').textContent = totalGames ? Math.round(salehGames / totalGames * 100) + '%' : '0%';
+    document.getElementById('naif-winrate').textContent = totalGames ? Math.round(naifGames / totalGames * 100) + '%' : '0%';
+    document.getElementById('saleh-sweeps').textContent = salehSweeps;
+    document.getElementById('naif-sweeps').textContent = naifSweeps;
+
+    // Streak
+    let streak = 0, streakPlayer = '';
+    const sorted = [...nights].sort((a, b) => b.date.localeCompare(a.date));
+    for (const n of sorted) {
+      const winner = n.saleh > n.naif ? 'saleh' : n.naif > n.saleh ? 'naif' : 'draw';
+      if (winner === 'draw') break;
+      if (!streakPlayer) streakPlayer = winner;
+      if (winner === streakPlayer) streak++;
+      else break;
+    }
+
+    const streakText = document.getElementById('streak-text');
+    if (streak > 0) {
+      const name = streakPlayer.charAt(0).toUpperCase() + streakPlayer.slice(1);
+      streakText.textContent = `🔥 ${name} — ${streak} night${streak > 1 ? 's' : ''} in a row`;
+      streakText.style.color = streakPlayer === 'saleh' ? '#0071e3' : '#e30000';
+    } else {
+      streakText.textContent = totalNights ? 'No active streak' : 'No games yet';
+      streakText.style.color = '#86868b';
+    }
+
+    // Night list
+    const list = document.getElementById('night-list');
+    if (nights.length === 0) {
+      list.innerHTML = '<div style="text-align:center;color:#86868b;padding:32px;">No nights recorded yet</div>';
+      return;
+    }
+
+    list.innerHTML = sorted.map((n, i) => {
+      const winner = n.saleh > n.naif ? 'saleh' : n.naif > n.saleh ? 'naif' : 'draw';
+      const winnerLabel = winner === 'draw' ? 'Draw' : winner.charAt(0).toUpperCase() + winner.slice(1);
+      const dateStr = new Date(n.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      return `
+        <div class="night-card">
+          <div class="night-date">${dateStr}</div>
+          <div class="night-score">
+            <span class="s">${n.saleh}</span>
+            <span class="dash">–</span>
+            <span class="n">${n.naif}</span>
+          </div>
+          <div class="night-winner ${winner}">${winnerLabel}</div>
+          ${n.note ? '<span style="color:#86868b;font-size:0.75rem;">' + n.note + '</span>' : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Load data and render
+  loadData();
+</script>
+
+</body>
+</html>
